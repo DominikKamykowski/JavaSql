@@ -9,6 +9,7 @@ public class MainFrame extends JDialog {
     private JButton refreshButton;
     private JButton addButton;
     private JButton updateButton;
+    private JButton removeButton;
 
     ArrayList<Staff> _list;
     private IStaffRepository _repo;
@@ -49,33 +50,35 @@ public class MainFrame extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+        refreshButton.addActionListener(e -> {
+            _list = _repo.getAllStaff();
+
+            DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+            model.setRowCount(0);
+
+            Object[] row = new Object[5];
+            for (Staff staff : _list) {
+                row[0] = staff.getId();
+                row[1] = staff.getFirstName();
+                row[2] = staff.getLastName();
+                row[3] = staff.getPhone();
+                row[4] = staff.getEmail();
+
+                model.addRow(row);
             }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        });
+        removeButton.addActionListener(e -> {
+            int index = tblStaff.getSelectedRow();
 
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                _list = _repo.getAllStaff();
-
-                DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
-                model.setRowCount(0);
-
-                Object[] row = new Object[5];
-                for (Staff staff : _list) {
-                    row[0] = staff.getId();
-                    row[1] = staff.getFirstName();
-                    row[2] = staff.getLastName();
-                    row[3] = staff.getPhone();
-                    row[4] = staff.getEmail();
-
-                    model.addRow(row);
-                }
-
+            if(index != -1){
+                Staff staffToDelete = _list.get(index);
+                _repo.remove(staffToDelete.getId());
             }
+            //TODO fix bug when selected more than 1 staff
         });
     }
 
