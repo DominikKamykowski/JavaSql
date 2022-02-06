@@ -6,4 +6,5 @@ public interface IStaffRepository {
     void create(Staff staff);
     void update(Staff staff);
     void remove(int id);
+    int getFreeID();
 }

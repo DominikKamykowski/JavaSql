@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class StaffRepository implements IStaffRepository{
 
@@ -19,6 +20,17 @@ public class StaffRepository implements IStaffRepository{
         return ds;
     }
 
+    @Override
+    public int getFreeID(){
+        ArrayList<Staff> list = getAllStaff();
+        ListIterator<Staff> iterator = list.listIterator();
+
+        for (ListIterator<Staff> it = iterator; it.hasNext(); ) {
+            //TODO
+        }
+
+        return 0;
+    }
 
     @Override
     public ArrayList<Staff> getAllStaff() {

@@ -80,11 +80,16 @@ public class MainFrame extends JDialog {
             }
             //TODO fix bug when selected more than 1 staff
         });
+        addButton.addActionListener(e -> {
+            CreateStaff staff = new CreateStaff();
+            staff.pack();
+            staff.setVisible(true);
+        });
     }
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
+        System.exit(1);
     }
 
     public static void main(String[] args) {
